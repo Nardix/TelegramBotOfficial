@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 COPY query.py /app/query.py
 COPY bot.py /app/bot.py
 COPY .env /app/.env
-COPY Audio/ /app/Audio/
+COPY Audio/ /app/res/
 
 # Imposta la directory di lavoro
 WORKDIR /app
