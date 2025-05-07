@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  mio_servizio:
+    build: .
+    container_name: telegram-bot
+    restart: always
+    image: bot-telegram-image:latest
+    environment:
+      - TZ=Europe/Rome

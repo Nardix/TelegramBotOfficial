@@ -1,0 +1,4 @@
+python-telegram-bot==20.7
+python-telegram-bot[job-queue]==20.7
+py2neo
+python-dotenv
