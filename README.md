@@ -10,7 +10,7 @@
 Bot personale di telegram per contare "punteggi" (es. ogni volta che si beve acqua, ogni volta che si va in bagno ecc...) nei gruppi telegram
 
 il bot funziona tranquillamente su diversi gruppi e per ognuno crea una classifica mensile (si resetta ogni mese) o totale (senza reset)
-visualizzabili tramite gli appositi comandi (vedere - [Modo d'uso](#modo-duso))
+visualizzabili tramite gli appositi comandi (vedere [Modo d'uso](#modo-duso))
 
 ## Modo d'uso
 
