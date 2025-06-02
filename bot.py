@@ -46,19 +46,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
     message = (
-        "Per far si che il bot conti le tue cagate, registrati una sola volta digitando /start e ad ogni cagata usa l'emoji 💩, valgono anche gli stickers con questa emoji.\n\n"
+        "Per far si che il bot conti il tuo punteggio, registrati una sola volta digitando /start e ad ogni conteggio usa l'emoji 🔝, valgono anche gli stickers con questa emoji.\n\n"
         "lista comandi:\n\n"
         "/start per registrarti\n"
-        "/profilo per contare le tue cagate mensili, totali e il record di cagate in un mese\n"
+        "/profilo per vedere il tuo punteggio mensile, totale e il record di punteggio in un mese\n"
         "/classifica per vedere la classifica mensile\n"
-        "/classifica_totale per vedere la classifica sul totale delle cagate fatte\n"
+        "/classifica_totale per vedere la classifica sul totale dei punteggi fatti\n"
         "/record per vedere la classifica dei record massimi raggiunti"
     )
     await runMessageUpdate(message, update)
 
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.message and (update.message.text == "💩" or (update.message.sticker != None and update.message.sticker.emoji == "💩")):
+    if update.message and (update.message.text == "🔝" or (update.message.sticker != None and update.message.sticker.emoji == "🔝")):
         user = update.effective_user
         data = update.effective_message.date.astimezone(pytz.timezone('Europe/Rome')).strftime('%Y-%m-%d %H:%M:%S')
         content = runQuery(queries.get("controllo").format(chat_id=update.effective_chat.id , user_id=user.id, user_full_name=user.full_name, data=data))
@@ -69,9 +69,9 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             content2 = runQuery(queries.get("sorpasso").format(chat_id=update.effective_chat.id, total=content[0].get('total')-1))
             if len(content2)!=0:
                 buffer = buffer + f"\n🏁 *{user.full_name}* ha appena superato *{content2[0].get('nome')}* 🏁"
-            await runMessageUpdate(f"*{user.full_name}* ha fatto la caccon! Per un totale di {content[0].get('total')} volte questo mese{buffer}", update, parse_mode='Markdown')
+            await runMessageUpdate(f"*{user.full_name}* nuovo punteggio di {content[0].get('total')} questo mese{buffer}", update, parse_mode='Markdown')
             if content[0].get('fulltotal')%100==0:
-                await runMessageUpdate(f"🎉 *{user.full_name}* ha raggiunto le {content[0].get('fulltotal')} cagate totali, congratulazioni! 🎉", update, parse_mode='Markdown')
+                await runMessageUpdate(f"🎉 *{user.full_name}* ha raggiunto un punteggio totale di {content[0].get('fulltotal')}, congratulazioni! 🎉", update, parse_mode='Markdown')
                 await context.bot.send_voice(update.effective_chat.id, voice=open(victory_sound_choice(), 'rb'))
         else:    
             await runMessageUpdate(rf"*{user.full_name}* non sei ancora registrato! usa il comando /start per registrati", update, parse_mode='Markdown')
@@ -84,9 +84,9 @@ async def winner(context: ContextTypes.DEFAULT_TYPE) -> None:
     content = runQuery(queries.get("classifica").format(chat_id=job.chat_id))
     for i,user in enumerate(content):
         if i<3:
-            buffer1 = buffer1 + f"{i+1}) *{user.get('nome')}* con {user.get('total')} cagate\n"
+            buffer1 = buffer1 + f"{i+1}) *{user.get('nome')}* con {user.get('total')} punti\n"
         else:
-            buffer2 = buffer2 + f"{i+1}) *{user.get('nome')}* con {user.get('total')} cagate\n"
+            buffer2 = buffer2 + f"{i+1}) *{user.get('nome')}* con {user.get('total')} punti\n"
         val_tot+=user.get("total")
 
     message = (
@@ -95,8 +95,8 @@ async def winner(context: ContextTypes.DEFAULT_TYPE) -> None:
         f"{buffer1}\n"
         "- 🎖️ *ALTRI* 🎖️ -\n\n"
         f"{buffer2}\n"
-        f"I primi {len(content)} hanno effettuato un totale di {val_tot} cagate questo mese.\n\n"
-        "Le statistiche mensili sono state resettate, potete comunque vedere il totale delle cagate fatte con il comando /profilo"
+        f"I primi {len(content)} hanno effettuato un totale di {val_tot} punti questo mese.\n\n"
+        "Le statistiche mensili sono state resettate, potete comunque vedere il totale del punteggio effettuato con il comando /profilo"
     )
 
     await runMessageContext(message, context, parse_mode='Markdown', chat_id=job.chat_id)
@@ -108,9 +108,9 @@ async def profile(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     content = runQuery(queries.get("profilo").format(chat_id=update.effective_chat.id, user_id=user.id))
     if len(content)!=0:
         if content[0].get('u.total')==0:
-            await runMessageUpdate(f"*{user.full_name}* non ha ancora cagato questo mese\n{content[0].get('u.fulltotal')} cagate totali\n{content[0].get('u.record')} - record massimo in un mese", update, parse_mode='Markdown')
+            await runMessageUpdate(f"*{user.full_name}* non ha ancora effettuato punti questo mese\n{content[0].get('u.fulltotal')} punti totali\n{content[0].get('u.record')} - record massimo in un mese", update, parse_mode='Markdown')
         else:
-            await runMessageUpdate(f"*{user.full_name}* ha cagato {content[0].get('u.total')} volte questo mese\n{content[0].get('u.fulltotal')} cagate totali\nrecord massimo in un mese: {content[0].get('u.record')} cagate", update, parse_mode='Markdown')
+            await runMessageUpdate(f"*{user.full_name}* ha un punteggio di {content[0].get('u.total')} questo mese\n{content[0].get('u.fulltotal')} punti totali\nrecord massimo in un mese: {content[0].get('u.record')} punti", update, parse_mode='Markdown')
     else:
         await runMessageUpdate(f"*{user.full_name}* non sei ancora registrato! usa il comando /start per registrati", update, parse_mode='Markdown')
 
@@ -121,18 +121,18 @@ async def hallOfFame(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     val_tot = 0
     content = runQuery(queries.get("classifica").format(chat_id=chat_id))
     if len(content)==0:
-        await runMessageContext("Nessuno ha ancora cagato", context, chat_id=chat_id)
+        await runMessageContext("Nessuno ha ancora effettuato punti", context, chat_id=chat_id)
         return
 
     for i,user in enumerate(content):
-        buffer = buffer + f"{i+1}) *{user.get('nome')}* con {user.get('total')} cagate\n"
+        buffer = buffer + f"{i+1}) *{user.get('nome')}* con {user.get('total')} punti\n"
         val_tot+=user.get('total')
 
     month_name = datet.now().strftime("%B")
     message = (
         f"Classifica del mese di {month_name}\n\n"
         f"{buffer}\n"
-        f"i primi {len(content)} hanno effettuato un totale di {val_tot} cagate questo mese"
+        f"i primi {len(content)} hanno effettuato un totale di {val_tot} punti questo mese"
     )
 
     await runMessageContext(message, context, parse_mode='Markdown', chat_id=chat_id)
@@ -144,17 +144,17 @@ async def hallOfFameTotal(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     val_tot = 0
     content = runQuery(queries.get("classifica totale").format(chat_id=chat_id))
     if len(content)==0:
-        await runMessageContext("Nessuno ha ancora cagato", context, chat_id=chat_id)
+        await runMessageContext("Nessuno ha ancora effettuato punti", context, chat_id=chat_id)
         return
 
     for i,user in enumerate(content):
-        buffer = buffer + f"{i+1}) *{user.get('nome')}* con {user.get('fulltotal')} cagate\n"
+        buffer = buffer + f"{i+1}) *{user.get('nome')}* con {user.get('fulltotal')} punti\n"
         val_tot+=user.get('fulltotal')
 
     message = (
         f"Classifica generale sul totale\n\n"
         f"{buffer}\n"
-        f"i primi {len(content)} hanno effettuato un totale di {val_tot} cagate"
+        f"i primi {len(content)} hanno effettuato un totale di {val_tot} punti"
     )
 
     await runMessageContext(message, context, parse_mode='Markdown', chat_id=chat_id)
@@ -166,17 +166,17 @@ async def record(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     val_tot = 0
     content = runQuery(queries.get("record").format(chat_id=chat_id))
     if len(content)==0:
-        await runMessageContext("Nessuno ha ancora cagato", context, chat_id=chat_id)
+        await runMessageContext("Nessuno ha ancora effettuato punti", context, chat_id=chat_id)
         return
 
     for i,user in enumerate(content):
-        buffer = buffer + f"{i+1}) *{user.get('nome')}* con {user.get('record')} cagate\n"
+        buffer = buffer + f"{i+1}) *{user.get('nome')}* con {user.get('record')} punti\n"
         val_tot+=user.get('record')
 
     message = (
         f"Classifica dei record massimi\n\n"
         f"{buffer}\n"
-        f"totale dei primi {len(content)} record: {val_tot} cagate"
+        f"totale dei primi {len(content)} record: {val_tot} punti"
     )
 
     await runMessageContext(message, context, parse_mode='Markdown', chat_id=chat_id)
