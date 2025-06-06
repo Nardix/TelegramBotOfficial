@@ -1,52 +1,144 @@
-# Bot-Telegram
+# Bot Telegram
 
-- [Bot-Telegram](#bot-telegram)
-  - [Modo d'uso](#modo-duso)
-  - [Prima di iniziare](#prima-di-iniziare)
-  - [Docker](#docker)
-  - [Python](#python)
-    - [Requirements per python](#requirements-per-python)
+## 📋 Indice
 
-Bot personale di telegram per contare "punteggi" (es. ogni volta che si beve acqua, ogni volta che si va in bagno ecc...) nei gruppi telegram
+- [Bot Telegram](#bot-telegram)
+  - [📋 Indice](#-indice)
+  - [✨ Caratteristiche](#-caratteristiche)
+  - [🔧 Prerequisiti](#-prerequisiti)
+  - [🚀 Installazione](#-installazione)
+  - [⚙️ Configurazione](#️-configurazione)
+  - [🎮 Utilizzo](#-utilizzo)
+    - [Avvio del Bot](#avvio-del-bot)
+    - [Utilizzo con Docker (opzionale)](#utilizzo-con-docker-opzionale)
+  - [📝 Comandi Disponibili](#-comandi-disponibili)
+  - [🔍 Funzionalità Avanzate](#-funzionalità-avanzate)
+    - [Neo4j](#neo4j)
+  - [🤝 Contribuire](#-contribuire)
+  - [🐛 Segnalazione Bug](#-segnalazione-bug)
+  - [📄 Licenza](#-licenza)
+  - [🔗 Link Utili](#-link-utili)
+  - [🏆 Crediti](#-crediti)
+  - [📊 Badge](#-badge)
 
-il bot funziona tranquillamente su diversi gruppi e per ognuno crea una classifica mensile (si resetta ogni mese) o totale (senza reset)
-visualizzabili tramite gli appositi comandi (vedere [Modo d'uso](#modo-duso))
+## ✨ Caratteristiche
 
-## Modo d'uso
+Bot di telegram per contare "punteggi" (es. ogni volta che si beve acqua, ogni volta che si va in bagno ecc...) nei gruppi telegram
 
-ci sono diversi comandi:
+il bot funziona tranquillamente su diversi gruppi e per ognuno crea una classifica mensile (si resetta ogni mese) e totale (senza reset)
+visualizzabili tramite gli appositi comandi
 
-| Comando | Utilizzo |
-| :---: | :---: |
-| /start | usato da ogni utente per registrarsi |
-| /profilo | per vedere i propri dati |
-| /classifica | per vedere la classifica mensile |
-| /classifica_totale | per vedere la classifica sul totale dei punteggi |
-| /record | per vedere la classifica dei record massimi raggiunti |
+## 🔧 Prerequisiti
 
-## Prima di iniziare
+- Python 3.8 o superiore
+- Docker (opzionale)
+- Neo4j
+- Account Telegram
+- Token del bot ottenuto da [@BotFather](https://t.me/botfather)
 
-Genera un token per il bot tramite BotFather (https://telegram.me/BotFather) 
+## 🚀 Installazione
 
-Creare un istanza in neo4j (e' gratis e dura per sempre)
+1. **Clona il repository**
+   ```bash
+   git clone https://github.com/Nardix/Bot-Telegram.git
+   cd Bot-Telegram
+   ```
 
-Rinomina il file .env.dummy in .env
+2. **Installa le dipendenze**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Inserisci i dati (URI,username e password di Neo4j e Token di telegram) nel file .env
+## ⚙️ Configurazione
 
-## Docker
+1. **Ottieni il token del bot**
+   - Vai su [@BotFather](https://t.me/botfather) su Telegram
+   - Usa il comando `/newbot` e segui le istruzioni
+   - Copia il token fornito
 
-lancia il comando: 
-- `docker-compose up`
+2. **Configura le variabili d'ambiente**
+   
+   Crea un file `.env` nella root del progetto e sostituisci i ??? con i tuoi dati:
+   ```env
+   NEO4J_URI=???
+   NEO4J_USERNAME=???
+   NEO4J_PASSWORD=???
+   TOKEN_ORIGINAL=???
+   TOKEN_TEST=???
+   CHAT_ID=???
+   ```
 
-## Python
+## 🎮 Utilizzo
 
-lancia il comando:
-- `python bot.py`
+### Avvio del Bot
 
-### Requirements per python
+```bash
+python bot.py
+```
 
-- `python-telegram-bot==20.7`
-- `python-telegram-bot[job-queue]==20.7`
-- `py2neo`
-- `python-dotenv`
+### Utilizzo con Docker (opzionale)
+
+```bash
+docker-compose up
+```
+
+## 📝 Comandi Disponibili
+
+| Comando | Descrizione |
+|---------|-------------|
+| `/start` | Ti registra per iniziare i conteggi | 
+| `/help` | Mostra la lista completa dei comandi | 
+| `/profilo` | Permette di visualizzare i propri dati | 
+| `/classifica` | Visualizza la classifica mensile | 
+| `/classifica_totale` | Visualizza la classifica sul totale dei punteggi |
+| `record` | Mostra la classifica dei record massimi raggiunti |
+
+## 🔍 Funzionalità Avanzate
+
+### Neo4j
+
+Bisogna avviare un istanza di Neo4j (gratuita)
+
+## 🤝 Contribuire
+
+I contributi sono sempre benvenuti! Ecco come puoi aiutare:
+
+1. **Fork** il progetto
+2. **Crea** un branch per la tua feature (`git checkout -b feature/AmazingFeature`)
+3. **Commit** le tue modifiche (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** al branch (`git push origin feature/AmazingFeature`)
+5. **Apri** una Pull Request
+
+## 🐛 Segnalazione Bug
+
+Se trovi un bug, per favore:
+
+1. Controlla se è già stato segnalato nelle [Issues](https://github.com/Nardix/Bot-Telegram/issues)
+2. Se non esiste, crea una nuova issue con:
+   - Descrizione dettagliata del problema
+   - Steps per riprodurre il bug
+   - Environment (OS, Python version, etc.)
+   - Log dell'errore (se disponibile)
+
+## 📄 Licenza
+
+Questo progetto è rilasciato sotto la licenza MIT. Vedi il file [LICENSE](LICENSE) per i dettagli.
+
+## 🔗 Link Utili
+
+- [Telegram Bot API](https://core.telegram.org/bots/api)
+- [python-telegram-bot Documentation](https://python-telegram-bot.readthedocs.io/)
+- [BotFather](https://t.me/botfather)
+
+## 🏆 Crediti
+
+Creato con ❤️ da [Nardix](https://github.com/Nardix)
+
+---
+
+⭐ Se questo progetto ti è stato utile, considera di mettere una stella!
+
+## 📊 Badge
+
+![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
