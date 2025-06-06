@@ -91,7 +91,7 @@ docker-compose up
 | `/profilo` | Permette di visualizzare i propri dati | 
 | `/classifica` | Visualizza la classifica mensile | 
 | `/classifica_totale` | Visualizza la classifica sul totale dei punteggi |
-| `record` | Mostra la classifica dei record massimi raggiunti |
+| `/record` | Mostra la classifica dei record massimi raggiunti |
 
 ## 🔍 Funzionalità Avanzate
 
